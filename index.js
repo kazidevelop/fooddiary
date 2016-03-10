@@ -1,17 +1,54 @@
 var React = require('react');
 var ReactDOM = require('react-dom');
 
+// var TodoList = React.createClass({
+//   render: function() {
+//     var createItem = function(item) {
+//       return <li key={item.id}>{item.text}</li>;
+//     };
+//     return <ul>{this.props.items.map(createItem)}</ul>;
+//   }
+// });
+
+
 var TodoList = React.createClass({
   render: function() {
     var createItem = function(item) {
       return <li key={item.id}>{item.text}</li>;
     };
-    return <ul>{this.props.items.map(createItem)}</ul>;
+      return <div><h3>{this.props.text}</h3><ul>{this.props.items.map(createItem)}</ul></div>;
+
+
   }
 });
+
+
+var FoodTimes = React.createClass({
+
+  render: function() {
+    var createItem2 = function(red) {
+         return <TodoList  key={red.id} text={red.text} items={red.foods}  />;// <li key={red.id}>{red.text} </li>;
+    };
+    return <ul>{this.props.reds.map(createItem2)}</ul>;
+  }
+
+
+
+});
+
 var TodoApp = React.createClass({
   getInitialState: function() {
-    return {items: [], text: ''};
+
+    return {
+      items: []
+      , text: ''
+      ,reds:[
+        {'id':'1', 'text': 'Breakfast', 'foods': [{'id':'a', 'text' : 'b'}]},
+        {'id':'2', 'text': 'Lunch','foods': [{'id':'a', 'text' : 'b'}]}
+    ]
+
+    //  ,foodTimes:[{id=1, text ='Breakfast'}, {id=2, text ='Lunch'}]
+  };
   },
   onChange: function(e) {
     this.setState({text: e.target.value});
@@ -26,7 +63,7 @@ var TodoApp = React.createClass({
     return (
       <div>
         <h3>Today</h3>
-        <h4>Breakfast</h4>
+        <FoodTimes reds={this.state.reds}  />
         <TodoList items={this.state.items} />
         <form onSubmit={this.handleSubmit}>
           <input onChange={this.onChange} value={this.state.text} />
