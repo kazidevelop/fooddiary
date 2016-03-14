@@ -1,54 +1,18 @@
 var React = require('react');
 var ReactDOM = require('react-dom');
 
-// var TodoList = React.createClass({
-//   render: function() {
-//     var createItem = function(item) {
-//       return <li key={item.id}>{item.text}</li>;
-//     };
-//     return <ul>{this.props.items.map(createItem)}</ul>;
-//   }
-// });
-
 
 var TodoList = React.createClass({
   render: function() {
     var createItem = function(item) {
       return <li key={item.id}>{item.text}</li>;
     };
-      return <div><h3>{this.props.text}</h3><ul>{this.props.items.map(createItem)}</ul></div>;
-
-
+    return <ul>{this.props.items.map(createItem)}</ul>;
   }
 });
-
-
-var FoodTimes = React.createClass({
-
-  render: function() {
-    var createItem2 = function(red) {
-         return <TodoList  key={red.id} text={red.text} items={red.foods}  />;// <li key={red.id}>{red.text} </li>;
-    };
-    return <ul>{this.props.reds.map(createItem2)}</ul>;
-  }
-
-
-
-});
-
 var TodoApp = React.createClass({
   getInitialState: function() {
-
-    return {
-      items: []
-      , text: ''
-      ,reds:[
-        {'id':'1', 'text': 'Breakfast', 'foods': [{'id':'a', 'text' : 'b'}]},
-        {'id':'2', 'text': 'Lunch','foods': [{'id':'a', 'text' : 'b'}]}
-    ]
-
-    //  ,foodTimes:[{id=1, text ='Breakfast'}, {id=2, text ='Lunch'}]
-  };
+    return {items: [], text: ''};
   },
   onChange: function(e) {
     this.setState({text: e.target.value});
@@ -62,8 +26,6 @@ var TodoApp = React.createClass({
   render: function() {
     return (
       <div>
-        <h3>Today</h3>
-        <FoodTimes reds={this.state.reds}  />
         <TodoList items={this.state.items} />
         <form onSubmit={this.handleSubmit}>
           <input onChange={this.onChange} value={this.state.text} />
@@ -75,7 +37,36 @@ var TodoApp = React.createClass({
 });
 
 
-ReactDOM.render(
-  <TodoApp />,
-  document.getElementById('app')
-)
+var MealType = React.createClass({
+
+  render: function()
+  {
+    return(
+      <div>
+      <h4>{this.props.localMealType}</h4>
+      <TodoApp />
+      </div>
+    )
+  }
+})
+
+var DayDiary = React.createClass({
+    render: function() {
+      var createMealType = function (mealType)
+      {
+        return (<MealType localMealType={mealType} />)
+      }
+      return <div>
+              <div>
+              <span>Class: 2</span>&nbsp;<span>Name: Ayanna</span>
+              </div>
+              <div>
+                Date: Monday , 14-03-2016
+              </div>
+            {this.props.mealTypes.map(createMealType)}
+            </div>;
+    }
+  });
+
+
+ReactDOM.render(<DayDiary  mealTypes={['Breakfast','Lunch', 'Supper']}  />,   document.getElementById('app'));
